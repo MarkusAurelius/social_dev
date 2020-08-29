@@ -8,38 +8,45 @@ import Experience from './Experience';
 import Education from './Education';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 
-const Dashboard = ({ getCurrentProfile, auth: { user }, profile: {profile, loading}, deleteAccount }) => {
+const Dashboard = ({
+    getCurrentProfile,
+    deleteAccount,
+    auth: { user },
+    profile: { profile }
+  }) => {
     useEffect(() => {
-        getCurrentProfile();
+      getCurrentProfile();
     }, [getCurrentProfile]);
-    
-    return loading && profile === null ? <Spinner /> : <Fragment>
+  
+    return (
+      <Fragment>
         <h1 className="large text-primary">Dashboard</h1>
         <p className="lead">
-            <i className="fas fa-user"></i>Welcome { user && user.name }
+          <i className="fas fa-user" /> Welcome {user && user.name}
         </p>
         {profile !== null ? (
-        <Fragment>
+          <Fragment>
             <DashboardActions />
             <Experience experience={profile.experience} />
             <Education education={profile.education} />
-
-            <div className='my-2'>
-                <button className="btn btn-danger" onClick={() => deleteAccount()}>
-                    <i className="fas fa-user-minus"></i> Delete My Account
-                </button>
+  
+            <div className="my-2">
+              <button className="btn btn-danger" onClick={() => deleteAccount()}>
+                <i className="fas fa-user-minus" /> Delete My Account
+              </button>
             </div>
-        </Fragment> 
+          </Fragment>
         ) : (
-        <Fragment>
-            <p>You have not yet setup a profile. Please add some info.</p>
-            <Link to='/create-profile' className="btn btn-primary my-1">
-                Create Profile
+          <Fragment>
+            <p>You have not yet setup a profile, please add some info</p>
+            <Link to="/create-profile" className="btn btn-primary my-1">
+              Create Profile
             </Link>
-        </Fragment>
+          </Fragment>
         )}
-    </Fragment>;
-};
+      </Fragment>
+    );
+  };
 
 Dashboard.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
